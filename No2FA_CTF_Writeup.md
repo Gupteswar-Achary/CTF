@@ -1,5 +1,5 @@
 # 🔐 CTF Writeup — No 2FA (Medium)
-**Platform:** [PicoCTF](https://play.picoctf.org)  
+**Platform:** [PicoCTF]([https://play.picoctf.org](https://learn.cylabacademy.org/library/765?page=2&category=1))  
 **Category:** Web Exploitation  
 **Difficulty:** Medium  
 
