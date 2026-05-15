@@ -1,4 +1,4 @@
-# PicoCTF — Credential Stuffing
+# Cylab — Credential Stuffing
 
 ## Challenge Overview
 
@@ -128,5 +128,5 @@ for line in creds:
 ## References
 
 - [pwntools Documentation](https://docs.pwntools.com/en/stable/)
-- [PicoCTF Platform](https://picoctf.org/)
+- [Cylab Academy](https://learn.cylabacademy.org//)
 - [pwntools `remote()` guide](https://docs.pwntools.com/en/stable/tubes/net.html)
