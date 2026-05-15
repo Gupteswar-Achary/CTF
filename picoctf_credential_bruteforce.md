@@ -4,7 +4,7 @@
 
 | Field           | Details                                      |
 |----------------|----------------------------------------------|
-| **Platform**   | [PicoCTF](https://learn.cylabacademy.org/library/765?page=2&category=1)                                        |
+| **Platform**   | [Cylab Academy](https://learn.cylabacademy.org/library/749?page=2&category=1)                                        |
 | **Category**   | Web Exploitation                             |
 | **Tools Used** | Python, pwntools                             |
 | **Difficulty** | Medium                                       |
