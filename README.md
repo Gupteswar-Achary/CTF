@@ -31,7 +31,7 @@ Each challenge entry includes:
 
 | Platform | Link |
 |----------|------|
-| PicoCTF | [picoctf.org](https://picoctf.org) |
+| CyLab | [learn.cylabacademy.org](https://learn.cylabacademy.org/) |
 | TryHackMe | [tryhackme.com](https://tryhackme.com) |
 | Hack The Box | [hackthebox.com](https://hackthebox.com) |
 | CTFtime | [ctftime.org](https://ctftime.org) |
